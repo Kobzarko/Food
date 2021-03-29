@@ -1,37 +1,35 @@
-window.addEventListener('DOMContentLoaded', function(){
-
+window.addEventListener("DOMContentLoaded", function () {
   //! Tabs
 
-  let tabs = document.querySelectorAll('.tabheader__item'),
-    tabsContent = document.querySelectorAll('.tabcontent'),
-    tabsParent = document.querySelector('.tabheader__items');
+  let tabs = document.querySelectorAll(".tabheader__item"),
+    tabsContent = document.querySelectorAll(".tabcontent"),
+    tabsParent = document.querySelector(".tabheader__items");
 
-  function hideTabContent(){
-
-    tabsContent.forEach(item=>{
-      item.classList.add('hide');
-      item.classList.remove('show', 'fade');
+  function hideTabContent() {
+    tabsContent.forEach((item) => {
+      item.classList.add("hide");
+      item.classList.remove("show", "fade");
     });
 
-    tabs.forEach(item=>{
-      item.classList.remove('tabheader__item_active');
+    tabs.forEach((item) => {
+      item.classList.remove("tabheader__item_active");
     });
   }
 
-  function showTabContent(i=0){
-    tabsContent[i].classList.add('show','fade');
-    tabsContent[i].classList.remove('hide');
-    tabs[i].classList.add('tabheader__item_active');
+  function showTabContent(i = 0) {
+    tabsContent[i].classList.add("show", "fade");
+    tabsContent[i].classList.remove("hide");
+    tabs[i].classList.add("tabheader__item_active");
   }
 
   hideTabContent();
   showTabContent();
 
-  tabsParent.addEventListener('click', function(event){
+  tabsParent.addEventListener("click", function (event) {
     const target = event.target;
-    if(target && target.classList.contains('tabheader__item')){
-      tabs.forEach((item, i)=> {
-        if(target == item){
+    if (target && target.classList.contains("tabheader__item")) {
+      tabs.forEach((item, i) => {
+        if (target == item) {
           hideTabContent();
           showTabContent(i);
         }
@@ -39,25 +37,23 @@ window.addEventListener('DOMContentLoaded', function(){
     }
   });
 
-
   //! TIMER
 
-  const deadline = '2021,04,01';
+  const deadline = "2021,04,01";
 
-  const promotionDescr = document.querySelector('.promotion__descr'),
-  spanDate = promotionDescr.querySelector('.spanDate');
+  const promotionDescr = document.querySelector(".promotion__descr"),
+    spanDate = promotionDescr.querySelector(".spanDate");
 
   // установить дату конца акции
   function setDateSaleEnd(deadline, spanDate) {
-
     let date = new Date(deadline);
     let day = new Intl.DateTimeFormat("ru", {
       month: "long",
-      day: "numeric"
+      day: "numeric",
     });
     let time = new Intl.DateTimeFormat("ru", {
       hour: "numeric",
-      minute: "numeric"
+      minute: "numeric",
     });
 
     spanDate.textContent = `${day.format(date)} в ${time.format(date)}`;
@@ -68,44 +64,41 @@ window.addEventListener('DOMContentLoaded', function(){
 
   setDateSaleEnd(deadline, spanDate);
 
-
-  function getTimeRemaining(endtime){
+  function getTimeRemaining(endtime) {
     const t = Date.parse(endtime) - Date.parse(new Date()),
-      days = Math.floor( (t/(1000*60*60*24)) ),
-      seconds = Math.floor( (t/1000) % 60 ),
-      minutes = Math.floor( (t/1000/60) % 60 ),
-      hours = Math.floor( (t/(1000*60*60) % 24 ));
+      days = Math.floor(t / (1000 * 60 * 60 * 24)),
+      seconds = Math.floor((t / 1000) % 60),
+      minutes = Math.floor((t / 1000 / 60) % 60),
+      hours = Math.floor((t / (1000 * 60 * 60)) % 24);
 
-      return {
-        'total': t,
-        'days': days,
-        'hours': hours,
-        'minutes': minutes,
-        'seconds': seconds
-      };
+    return {
+      total: t,
+      days: days,
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds,
+    };
   }
 
-  function getZero(num){
-    if(num >= 0 && num < 10){
-      return '0' + num;
+  function getZero(num) {
+    if (num >= 0 && num < 10) {
+      return "0" + num;
     } else {
       return num;
     }
   }
 
-  function setClock(selector, endtime){
-
+  function setClock(selector, endtime) {
     const timer = document.querySelector(selector),
-    days = timer.querySelector('#days'),
-    hours = timer.querySelector('#hours'),
-    minutes = timer.querySelector('#minutes'),
-    seconds = timer.querySelector('#seconds'),
-    timeInterval = setInterval(updateClock, 1000);
-  
+      days = timer.querySelector("#days"),
+      hours = timer.querySelector("#hours"),
+      minutes = timer.querySelector("#minutes"),
+      seconds = timer.querySelector("#seconds"),
+      timeInterval = setInterval(updateClock, 1000);
 
     updateClock();
 
-    function updateClock(){
+    function updateClock() {
       const t = getTimeRemaining(endtime);
 
       days.innerHTML = getZero(t.days);
@@ -113,7 +106,7 @@ window.addEventListener('DOMContentLoaded', function(){
       minutes.innerHTML = getZero(t.minutes);
       seconds.innerHTML = getZero(t.seconds);
 
-      if(t.total <= 0){
+      if (t.total <= 0) {
         clearInterval(timeInterval);
         hours.textContent = "00";
         minutes.textContent = "00";
@@ -123,58 +116,60 @@ window.addEventListener('DOMContentLoaded', function(){
     }
   }
 
-  setClock('.timer', deadline);
+  setClock(".timer", deadline);
 
   //! MODAL
 
-  const modalTrigger = document.querySelectorAll('[data-modal]'),
-  modal = document.querySelector('.modal');
+  const modalTrigger = document.querySelectorAll("[data-modal]"),
+    modal = document.querySelector(".modal");
 
-modalTrigger.forEach(btn => {
-  btn.addEventListener('click', openModal);
-});
+  modalTrigger.forEach((btn) => {
+    btn.addEventListener("click", openModal);
+  });
 
-function closeModal() {
-  modal.classList.add('hide');
-  modal.classList.remove('show');
-  document.body.style.overflow = '';
-}
-
-function openModal() {
-  modal.classList.add('show');
-  modal.classList.remove('hide');
-  document.body.style.overflow = 'hidden';
-  clearInterval(modalTimerId);
-}
-
-modal.addEventListener('click', (e) => {
-  if (e.target === modal || e.target.getAttribute('data-close') == "") {
-      closeModal();
+  function closeModal() {
+    modal.classList.add("hide");
+    modal.classList.remove("show");
+    document.body.style.overflow = "";
   }
-});
 
-document.addEventListener('keydown', (e) => {
-  if (e.code === "Escape" && modal.classList.contains('show')) { 
-      closeModal();
+  function openModal() {
+    modal.classList.add("show");
+    modal.classList.remove("hide");
+    document.body.style.overflow = "hidden";
+    clearInterval(modalTimerId);
   }
-});
 
-const modalTimerId = setTimeout(openModal, 300000);
-// Изменил значение, чтобы не отвлекало
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal || e.target.getAttribute("data-close") == "") {
+      closeModal();
+    }
+  });
 
-function showModalByScroll() {
-  if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "Escape" && modal.classList.contains("show")) {
+      closeModal();
+    }
+  });
+
+  const modalTimerId = setTimeout(openModal, 300000);
+  // Изменил значение, чтобы не отвлекало
+
+  function showModalByScroll() {
+    if (
+      window.pageYOffset + document.documentElement.clientHeight >=
+      document.documentElement.scrollHeight - 10
+    ) {
       openModal();
-      window.removeEventListener('scroll', showModalByScroll);
+      window.removeEventListener("scroll", showModalByScroll);
+    }
   }
-}
-window.addEventListener('scroll', showModalByScroll);
-
+  window.addEventListener("scroll", showModalByScroll);
 
   //* CLASSES
 
   class MenuCard {
-    constructor(src,alt,title,descr,price,parentSelector){
+    constructor(src, alt, title, descr, price, parentSelector) {
       this.src = src;
       this.alt = alt;
       this.title = title;
@@ -182,15 +177,15 @@ window.addEventListener('scroll', showModalByScroll);
       this.price = price;
       this.parent = document.querySelector(parentSelector);
       this.transfer = 28;
-      this.changeToUAH(); 
+      this.changeToUAH();
     }
 
-    changeToUAH(){
-      this.price = this.price*this.transfer;
+    changeToUAH() {
+      this.price = this.price * this.transfer;
     }
 
-    render(){
-      const element = document.createElement('div');
+    render() {
+      const element = document.createElement("div");
       element.innerHTML = `
       <div class="menu__item">
         <img src=${this.src} alt=${this.alt}>
@@ -209,106 +204,129 @@ window.addEventListener('scroll', showModalByScroll);
 
   new MenuCard(
     "img/tabs/vegy.jpg",
-        "vegy",
-        'Меню "Фитнес"',
-        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-        9,
-        ".menu .container"
+    "vegy",
+    'Меню "Фитнес"',
+    'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+    9,
+    ".menu .container"
   ).render();
 
   new MenuCard(
     "img/tabs/post.jpg",
-        "post",
-        'Меню "Постное"',
-        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
-        14,
-        ".menu .container"
+    "post",
+    'Меню "Постное"',
+    "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.",
+    14,
+    ".menu .container"
   ).render();
 
   new MenuCard(
     "img/tabs/elite.jpg",
-        "elite",
-        'Меню “Премиум”',
-        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
-        21,
-        ".menu .container"
+    "elite",
+    "Меню “Премиум”",
+    "В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!",
+    21,
+    ".menu .container"
   ).render();
 
-    //*FORMS
-    //текст по результатуё
-    const forms = document.querySelectorAll('form');
-    const message = {
-        loading: 'img/form/spinner.svg',
-        success: 'Спасибо! Скоро мы с вами свяжемся',
-        failure: 'Что-то пошло не так...'
-    };
+  //*FORMS
+  //текст по результату
+  const forms = document.querySelectorAll("form");
+  const message = {
+    loading: "img/form/spinner.svg",
+    // loading: 'loading',
+    success: "Спасибо! Скоро мы с вами свяжемся",
+    failure: "Что-то пошло не так...",
+  };
 
-    forms.forEach(item => {
-        postData(item);
-    });
+  forms.forEach((item) => {
+    postData(item);
+  });
 
-    function postData(form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
+  function postData(form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-            let statusMessage = document.createElement('img');
-            statusMessage.src = message.loading;
-            statusMessage.style.cssText = `
-                display: block;
-                margin: 0 auto;
-            `;
-            form.insertAdjacentElement('afterend', statusMessage);
-        
-            const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');
-            request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-            const formData = new FormData(form);
+      let statusMessage = document.createElement("img");
+      // напрямую обращаемся к атрибуту
+      statusMessage.src = message.loading;
+      // добавляем стили нашему img
+      statusMessage.style.cssText = `
+            display: block;
+            margin: 0 auto;
+          `;
+      // form.appendChild(statusMessage);
+      form.insertAdjacentElement("afterend", statusMessage);
 
-            const object = {};
-            formData.forEach(function(value, key){
-                object[key] = value;
-            });
-            const json = JSON.stringify(object);
+      const formData = new FormData(form);
 
-            request.send(json);
+      // перебрать formdata в объект
+      const object = {};
+      formData.forEach(function (value, key) {
+        object[key] = value;
+      });
 
-            request.addEventListener('load', () => {
-                if (request.status === 200) {
-                    console.log(request.response);
-                    showThanksModal(message.success);
-                    statusMessage.remove();
-                    form.reset();
-                } else {
-                    showThanksModal(message.failure);
-                }
-            });
+      fetch("server.php", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(object),
+      })
+        .then((data) => data.text())
+        .then((data) => {
+          console.log(data);
+          showThanksModal(message.success);
+          statusMessage.remove();
+        })
+        .catch(() => {
+          showThanksModal(message.failure);
+        })
+        .finally(() => {
+          form.reset();
         });
-    }
+    });
+  }
+  // функция заменяет одно окно другим ,а потом возвращает предыдущее окно
+  function showThanksModal(message) {
+    const prevModalDialog = document.querySelector(".modal__dialog");
 
-    function showThanksModal(message) {
-        const prevModalDialog = document.querySelector('.modal__dialog');
-
-        prevModalDialog.classList.add('hide');
-        openModal();
-
-        const thanksModal = document.createElement('div');
-        thanksModal.classList.add('modal__dialog');
-        thanksModal.innerHTML = `
+    prevModalDialog.classList.add("hide");
+    openModal();
+    // создать элемент
+    const thanksModal = document.createElement("div");
+    // добавить класс элементу, класс старого окна
+    thanksModal.classList.add("modal__dialog");
+    // создать окно
+    thanksModal.innerHTML = `
             <div class="modal__content">
-                <div class="modal__close" data-close>×</div>
+                <div class="modal__close" data-close>&times</div>
                 <div class="modal__title">${message}</div>
             </div>
         `;
-        document.querySelector('.modal').append(thanksModal);
-        setTimeout(() => {
-            thanksModal.remove();
-            prevModalDialog.classList.add('show');
-            prevModalDialog.classList.remove('hide');
-            closeModal();
-        }, 4000);
-    }
- 
+    // блоку modal добавить новое окно
+    document.querySelector(".modal").append(thanksModal);
+    // удалить новое окно через 4 сек
+    setTimeout(() => {
+      thanksModal.remove();
+      // показываем старое окно
+      prevModalDialog.classList.add("show");
+      prevModalDialog.classList.remove("hide");
+      // прячем блок .modal со старым окном
+      closeModal();
+    }, 4000);
+  }
 
+  // FETCH
+
+  // fetch("https://jsonplaceholder.typicode.com/posts", {
+  //   method: "POST",
+  //   body: JSON.stringify({ name: "Alex" }),
+  //   headers: {
+  //     "Content-type": "application/json",
+  //   },
+  // })
+  //   .then((response) => response.json())
+  //   .then((json) => console.log(json));
+  //test
 });
-
-
