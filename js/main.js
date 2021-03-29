@@ -319,6 +319,12 @@ window.addEventListener("DOMContentLoaded", function () {
 
   // FETCH
 
+  // db.json
+
+  fetch("http://localhost:3000/menu")
+    .then((data) => data.json)
+    .then((res) => console.log(res));
+
   // fetch("https://jsonplaceholder.typicode.com/posts", {
   //   method: "POST",
   //   body: JSON.stringify({ name: "Alex" }),
@@ -328,5 +334,9 @@ window.addEventListener("DOMContentLoaded", function () {
   // })
   //   .then((response) => response.json())
   //   .then((json) => console.log(json));
+
   //test
+  // npm i json-server --save-dev
+  // npm i
+  // json-server db.json
 });
