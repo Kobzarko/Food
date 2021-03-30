@@ -202,32 +202,62 @@ window.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  new MenuCard(
-    "img/tabs/vegy.jpg",
-    "vegy",
-    'Меню "Фитнес"',
-    'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-    9,
-    ".menu .container"
-  ).render();
+  // GET запрос для получения данных из db.json
+  const getResource = async (url) => {
+    const res = await fetch(url);
+    // .ok - состояние запроса
+    if (!res.ok) {
+      // выбросить ошибку
+      throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+    }
+    // вернуть результат
+    return await res.json();
+  };
 
-  new MenuCard(
-    "img/tabs/post.jpg",
-    "post",
-    'Меню "Постное"',
-    "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.",
-    14,
-    ".menu .container"
-  ).render();
+  // вызов для получения данных из бд используем класс
+  getResource("http://localhost:3000/menu").then((data) => {
+    //вытягиваем данные через деструктуризацию объекта по частям
+    data.forEach(({ img, altimg, title, descr, price }) => {
+      new MenuCard(
+        img,
+        altimg,
+        title,
+        descr,
+        price,
+        ".menu .container"
+      ).render();
+    });
+  });
 
-  new MenuCard(
-    "img/tabs/elite.jpg",
-    "elite",
-    "Меню “Премиум”",
-    "В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!",
-    21,
-    ".menu .container"
-  ).render();
+  // //альтернативный вариант без класса для одной карточки
+  // getResource("http://localhost:3000/menu").then((data) => createCard(data));
+  // // создать елемент на странице без класса
+  // function createCard(data) {
+  //   //перебираем полученный объект из бд
+  //   data.forEach(({ img, altimg, title, descr, price }) => {
+  //     // создаем новый элемент контейнер для нашей карточки
+  //     const element = document.createElement("div");
+  //     // корректируем цену по курсу
+  //     price = price * 28;
+  //     //добавляем класс
+  //     element.classList.add("menu__item");
+  //     // формируем верстку
+  //     element.innerHTML = `
+  //   <div class="menu__item">
+  //     <img src=${img} alt=${altimg}>
+  //     <h3 class="menu__item-subtitle">${title}</h3>
+  //     <div class="menu__item-descr">${descr}</div>
+  //     <div class="menu__item-divider"></div>
+  //     <div class="menu__item-price">
+  //       <div class="menu__item-cost">Цена:</div>
+  //       <div class="menu__item-total"><span>${price}</span> грн/день</div>
+  //     </div>
+  //   </div>
+  //   `;
+  //     // добавить элемент в общую верстку в нужное место
+  //     document.querySelector(".menu .container").append(element);
+  //   });
+  // }
 
   //*FORMS
   //текст по результату
@@ -240,10 +270,25 @@ window.addEventListener("DOMContentLoaded", function () {
   };
 
   forms.forEach((item) => {
-    postData(item);
+    bindpostData(item);
   });
 
-  function postData(form) {
+  // data данные которые будут поститься в этой функции
+  const postData = async (url, data) => {
+    // начинаем запрос
+    // await ждет результат запроса
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: data,
+    });
+    // возвращаем промис
+    return await res.json();
+  };
+
+  function bindpostData(form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
@@ -256,24 +301,22 @@ window.addEventListener("DOMContentLoaded", function () {
             margin: 0 auto;
           `;
       // form.appendChild(statusMessage);
+
       form.insertAdjacentElement("afterend", statusMessage);
 
       const formData = new FormData(form);
 
-      // перебрать formdata в объект
-      const object = {};
-      formData.forEach(function (value, key) {
-        object[key] = value;
-      });
+      // formData.entries возвращает массив собственных перечисляемых свойств
+      // Object.fromEntries() преобразует список пар ключ-значение в объект.
+      const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-      fetch("server.php", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(object),
-      })
-        .then((data) => data.text())
+      // // перебрать formdata в объект
+      // const object = {};
+      // formData.forEach(function (value, key) {
+      //   object[key] = value;
+      // });
+      // трансформация данных на этапе создания промиса
+      postData("http://localhost:3000/requests", json)
         .then((data) => {
           console.log(data);
           showThanksModal(message.success);
