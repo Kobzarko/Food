@@ -229,6 +229,20 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // axios library using
+  // axios.get("http://localhost:3000/menu").then((data) => {
+  //   data.data.forEach(({ img, altimg, title, descr, price }) => {
+  //     new MenuCard(
+  //       img,
+  //       altimg,
+  //       title,
+  //       descr,
+  //       price,
+  //       ".menu .container"
+  //     ).render();
+  //   });
+  // });
+
   // //альтернативный вариант без класса для одной карточки
   // getResource("http://localhost:3000/menu").then((data) => createCard(data));
   // // создать елемент на странице без класса
@@ -364,9 +378,9 @@ window.addEventListener("DOMContentLoaded", function () {
 
   // db.json
 
-  fetch("http://localhost:3000/menu")
-    .then((data) => data.json)
-    .then((res) => console.log(res));
+  // fetch("http://localhost:3000/menu")
+  //   .then((data) => data.json)
+  //   .then((res) => console.log(res));
 
   // fetch("https://jsonplaceholder.typicode.com/posts", {
   //   method: "POST",
