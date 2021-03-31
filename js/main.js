@@ -392,6 +392,49 @@ window.addEventListener("DOMContentLoaded", function () {
   //   .then((response) => response.json())
   //   .then((json) => console.log(json));
 
+  //*SLIDER
+
+  const arrowPrev = document.querySelector(".offer__slider-prev"),
+    arrowNext = document.querySelector(".offer__slider-next"),
+    current = document.querySelector("#current"),
+    slides = document.querySelectorAll(".offer__slide"),
+    total = document.querySelector("#total");
+
+  let slideIndex = 1;
+
+  showSlides(slideIndex);
+
+  function showSlides(counter) {
+    // если счетчик больше количества картинок то возвращаем к первой
+    if (counter > slides.length) {
+      slideIndex = 1;
+    }
+    //если меньше то возвращаем к последней картинке
+    if (counter < 1) {
+      slideIndex = slides.length;
+    }
+
+    slides.forEach((item) => (item.style.display = "none"));
+    slides[slideIndex - 1].style.display = "block";
+
+    if (slides.length < 10) {
+      current.textContent = `0${slideIndex}`;
+    } else {
+      current.textContent = slideIndex;
+    }
+  }
+
+  function plusSlides(counter) {
+    showSlides((slideIndex += counter));
+  }
+
+  arrowPrev.addEventListener("click", function () {
+    plusSlides(-1);
+  });
+
+  arrowNext.addEventListener("click", function () {
+    plusSlides(1);
+  });
   //test
   // npm i json-server --save-dev
   // npm i
