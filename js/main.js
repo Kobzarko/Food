@@ -436,7 +436,7 @@ window.addEventListener("DOMContentLoaded", function () {
   });
 
   // убираем абсолютное позиционирование у элементов внутри слайдера
-  // slider.style.postition = "relative";
+  slider.style.position = "relative";
 
   // создать обертку для точек
   const indicators = document.createElement("ol");
@@ -472,7 +472,7 @@ window.addEventListener("DOMContentLoaded", function () {
     background-clip: padding-box;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    opacity: .5;
+    opacity: .4;
     transition: opacity .6s ease;
     `;
     if (i == 0) {
@@ -480,6 +480,19 @@ window.addEventListener("DOMContentLoaded", function () {
     }
     indicators.append(dot);
     dots.push(dot);
+  }
+
+  function addZero() {
+    if (slides.length < 10) {
+      current.textContent = `0${slideIndex}`;
+    } else {
+      current.textContent = slideIndex;
+    }
+  }
+  // назначаем прозрачность актуальной точке
+  function setOpacity() {
+    dots.forEach((dot) => (dot.style.opacity = ".5"));
+    dots[slideIndex - 1].style.opacity = 1;
   }
 
   next.addEventListener("click", function () {
@@ -504,14 +517,16 @@ window.addEventListener("DOMContentLoaded", function () {
       slideIndex++;
     }
     // добавить ноль
-    if (slides.length < 10) {
-      current.textContent = `0${slideIndex}`;
-    } else {
-      current.textContent = slideIndex;
-    }
+    addZero();
+    // if (slides.length < 10) {
+    //   current.textContent = `0${slideIndex}`;
+    // } else {
+    //   current.textContent = slideIndex;
+    // }
     // назначаем прозрачность актуальной точке
-    dots.forEach((dot) => (dot.style.opacity = ".5"));
-    dots[slideIndex - 1].style.opacity = 1;
+    setOpacity();
+    // dots.forEach((dot) => (dot.style.opacity = ".5"));
+    // dots[slideIndex - 1].style.opacity = 1;
   });
 
   prev.addEventListener("click", function () {
@@ -532,14 +547,16 @@ window.addEventListener("DOMContentLoaded", function () {
       slideIndex--;
     }
     // добавить ноль
-    if (slides.length < 10) {
-      current.textContent = `0${slideIndex}`;
-    } else {
-      current.textContent = slideIndex;
-    }
+    addZero();
+    // if (slides.length < 10) {
+    //   current.textContent = `0${slideIndex}`;
+    // } else {
+    //   current.textContent = slideIndex;
+    // }
     // назначаем прозрачность актуальной точке
-    dots.forEach((dot) => (dot.style.opacity = ".5"));
-    dots[slideIndex - 1].style.opacity = 1;
+    setOpacity();
+    // dots.forEach((dot) => (dot.style.opacity = ".5"));
+    // dots[slideIndex - 1].style.opacity = 1;
   });
 
   dots.forEach((dot) => {
@@ -552,14 +569,16 @@ window.addEventListener("DOMContentLoaded", function () {
       slidesField.style.transform = `translateX(-${offset}px)`;
 
       // добавить ноль
-      if (slides.length < 10) {
-        current.textContent = `0${slideIndex}`;
-      } else {
-        current.textContent = slideIndex;
-      }
+      addZero();
+      // if (slides.length < 10) {
+      //   current.textContent = `0${slideIndex}`;
+      // } else {
+      //   current.textContent = slideIndex;
+      // }
 
-      dots.forEach((dot) => (dot.style.opacity = ".5"));
-      dots[slideIndex - 1].style.opacity = 1;
+      setOpacity();
+      // dots.forEach((dot) => (dot.style.opacity = ".5"));
+      // dots[slideIndex - 1].style.opacity = 1;
     });
   });
 
