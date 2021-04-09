@@ -495,12 +495,16 @@ window.addEventListener("DOMContentLoaded", function () {
     dots[slideIndex - 1].style.opacity = 1;
   }
 
+  function delNotDigits(str) {
+    return +str.replace(/\D/g, "");
+  }
   next.addEventListener("click", function () {
     // если наш отступ равен ширине одного слайда умноженного на кол. слайдов - 1
     // установить отступ в ноль
     // долистали до самого конца и надо вернуться в самое начало
     //  +width.slice(0, width.length - 2) получить число из ширины
-    if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+    // width.replace(/\D/g, "") удалить все не числа из строки
+    if (offset == delNotDigits(width) * (slides.length - 1)) {
       //width => 500px
       console.log(width.length);
       offset = 0;
@@ -532,7 +536,7 @@ window.addEventListener("DOMContentLoaded", function () {
   prev.addEventListener("click", function () {
     if (offset == 0) {
       //width => 500px
-      offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+      offset = delNotDigits(width) * (slides.length - 1);
     } else {
       //если не последний слайд листаем влево
       offset -= +width.slice(0, width.length - 2);
@@ -564,7 +568,7 @@ window.addEventListener("DOMContentLoaded", function () {
       const slideTo = e.target.getAttribute("data-slide-to");
 
       slideIndex = slideTo;
-      offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+      offset = delNotDigits(width) * (slideTo - 1);
       //смещаем наш блок
       slidesField.style.transform = `translateX(-${offset}px)`;
 
