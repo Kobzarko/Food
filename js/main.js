@@ -591,8 +591,12 @@ window.addEventListener("DOMContentLoaded", function () {
   //* CALCULATING
 
   const result = document.querySelector(".calculating__result span");
-  let sex, height, weight, age, ratio;
-
+  let sex = "female",
+    height,
+    weight,
+    age,
+    ratio = 1.375;
+  // изменяет данные каждый раз когда меняется значение в каком то поле
   function calcTotal() {
     if (!sex || !height || !weight || !age || !ratio) {
       result.textContent = "0";
@@ -600,11 +604,13 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     if (sex === "female") {
-      result.textContent =
-        (447.6 + 9.2 * weight + 3.1 * height - 4.3 * age) * ratio;
+      result.textContent = Math.round(
+        (447.6 + 9.2 * weight + 3.1 * height - 4.3 * age) * ratio
+      );
     } else {
-      result.textContent =
-        (88.36 + 13.4 * weight + 4.8 * height - 5.7 * age) * ratio;
+      result.textContent = Math.round(
+        (88.36 + 13.4 * weight + 4.8 * height - 5.7 * age) * ratio
+      );
     }
   }
 
@@ -614,22 +620,26 @@ window.addEventListener("DOMContentLoaded", function () {
     // получить все дивы элемента
     const elements = document.querySelectorAll(`${parentSelector} div`);
 
-    document.querySelector(parentSelector).addEventListener("click", (e) => {
-      // если элемент содержит дата-ratio то взять с него значение для коффициента ratio
-      if (e.target.getAttribute("data-ratio")) {
-        ratio = +e.target.getAttribute("data-ratio");
-      } else {
-        sex = e.target.getAttribute("id");
-      }
+    elements.forEach((elem) => {
+      elem.addEventListener("click", (e) => {
+        // если элемент содержит дата-ratio то взять с него значение для коффициента ratio
+        if (e.target.getAttribute("data-ratio")) {
+          ratio = +e.target.getAttribute("data-ratio");
+        } else {
+          sex = e.target.getAttribute("id");
+        }
 
-      console.log(ratio, sex);
+        console.log(ratio, sex);
 
-      // убираем класс активности для всех элементов
-      elements.forEach((elem) => {
-        elem.classList.remove(activeClass);
+        // убираем класс активности для всех элементов
+        elements.forEach((elem) => {
+          elem.classList.remove(activeClass);
+        });
+        // и добаляем только нужному элементу
+        e.target.classList.add(activeClass);
+
+        calcTotal();
       });
-      // и добаляем только нужному элементу
-      e.target.classList.add(activeClass);
     });
   }
 
@@ -639,12 +649,27 @@ window.addEventListener("DOMContentLoaded", function () {
   // обрабатывает каждый отдельный инпут
   function getDynamicInfo(selector) {
     const input = document.querySelector(selector);
+    // запись данных в определенную переменную
+    input.addEventListener("input", () => {
+      switch (input.getAttribute("id")) {
+        case "height":
+          height = +input.value;
+          break;
+        case "weight":
+          weight = +input.value;
+          break;
+        case "age":
+          age = +input.value;
+          break;
+      }
 
-    // input.addEventListener('input', ()=>{
-    //   switch(input.getAttribute('id'));
-    // });
+      calcTotal();
+    });
   }
 
+  getDynamicInfo("#height");
+  getDynamicInfo("#weight");
+  getDynamicInfo("#age");
   //test
   // npm i json-server --save-dev
   // npm i
