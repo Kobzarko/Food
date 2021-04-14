@@ -495,9 +495,11 @@ window.addEventListener("DOMContentLoaded", function () {
     dots[slideIndex - 1].style.opacity = 1;
   }
 
+  //убрать все не цифры
   function delNotDigits(str) {
     return +str.replace(/\D/g, "");
   }
+
   next.addEventListener("click", function () {
     // если наш отступ равен ширине одного слайда умноженного на кол. слайдов - 1
     // установить отступ в ноль
@@ -585,6 +587,63 @@ window.addEventListener("DOMContentLoaded", function () {
       // dots[slideIndex - 1].style.opacity = 1;
     });
   });
+
+  //* CALCULATING
+
+  const result = document.querySelector(".calculating__result span");
+  let sex, height, weight, age, ratio;
+
+  function calcTotal() {
+    if (!sex || !height || !weight || !age || !ratio) {
+      result.textContent = "0";
+      return;
+    }
+
+    if (sex === "female") {
+      result.textContent =
+        (447.6 + 9.2 * weight + 3.1 * height - 4.3 * age) * ratio;
+    } else {
+      result.textContent =
+        (88.36 + 13.4 * weight + 4.8 * height - 5.7 * age) * ratio;
+    }
+  }
+
+  calcTotal();
+
+  function getStaticInfo(parentSelector, activeClass) {
+    // получить все дивы элемента
+    const elements = document.querySelectorAll(`${parentSelector} div`);
+
+    document.querySelector(parentSelector).addEventListener("click", (e) => {
+      // если элемент содержит дата-ratio то взять с него значение для коффициента ratio
+      if (e.target.getAttribute("data-ratio")) {
+        ratio = +e.target.getAttribute("data-ratio");
+      } else {
+        sex = e.target.getAttribute("id");
+      }
+
+      console.log(ratio, sex);
+
+      // убираем класс активности для всех элементов
+      elements.forEach((elem) => {
+        elem.classList.remove(activeClass);
+      });
+      // и добаляем только нужному элементу
+      e.target.classList.add(activeClass);
+    });
+  }
+
+  getStaticInfo("#gender", "calculating__choose-item_active");
+  getStaticInfo(".calculating__choose_big", "calculating__choose-item_active");
+
+  // обрабатывает каждый отдельный инпут
+  function getDynamicInfo(selector) {
+    const input = document.querySelector(selector);
+
+    // input.addEventListener('input', ()=>{
+    //   switch(input.getAttribute('id'));
+    // });
+  }
 
   //test
   // npm i json-server --save-dev
