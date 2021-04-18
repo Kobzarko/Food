@@ -1,4 +1,4 @@
-window.addEventListener("DOMContentLoaded", () => {
+function cookieConsent() {
   //   const cookieStorage = {
   //     getItem: (key) => {
   //       const cookies = document.cookie.split(";").map(cookie.split("=")).reduce((acc, [key, value]) => ({ ...acc, [key.trim()]: value }), {});
@@ -45,4 +45,6 @@ window.addEventListener("DOMContentLoaded", () => {
     popup.classList.remove("popup_active");
     console.log("Canceled");
   });
-});
+}
+
+module.exports = cookieConsent;
