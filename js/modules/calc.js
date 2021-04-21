@@ -136,4 +136,4 @@ function calc() {
   // json-server db.json
 }
 
-module.exports = calc;
+export default calc;

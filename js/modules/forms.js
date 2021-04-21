@@ -1,4 +1,6 @@
-function forms() {
+import { closeModal, openModal } from "./modal";
+
+function forms(modalTimerId) {
   //текст по результату
   const forms = document.querySelectorAll("form");
   const message = {
@@ -74,7 +76,7 @@ function forms() {
     const prevModalDialog = document.querySelector(".modal__dialog");
 
     prevModalDialog.classList.add("hide");
-    openModal();
+    openModal(".modal", modalTimerId);
     // создать элемент
     const thanksModal = document.createElement("div");
     // добавить класс элементу, класс старого окна
@@ -95,7 +97,7 @@ function forms() {
       prevModalDialog.classList.add("show");
       prevModalDialog.classList.remove("hide");
       // прячем блок .modal со старым окном
-      closeModal();
+      closeModal(".modal");
     }, 4000);
   }
 
@@ -118,4 +120,4 @@ function forms() {
   //   .then((json) => console.log(json));
 }
 
-module.exports = forms;
+export default forms;

@@ -1,36 +1,37 @@
+//! Tabs
+import tabs from "./modules/tabs";
+
+//! MODAL
+import modal from "./modules/modal";
+//*TIMER
+import timer from "./modules/timer";
+//* CLASSES
+import cards from "./modules/cards";
+//*FORMS
+import forms from "./modules/forms";
+//*SLIDER
+import slider from "./modules/slider";
+//* CALCULATING
+import calc from "./modules/calc";
+//* COOKIES
+import cookieConsent from "./modules/cookieConsent";
+//* import function
+import { openModal } from "./modules/modal";
+
 window.addEventListener("DOMContentLoaded", function () {
-  //! Tabs
-  const tabs = require("./modules/tabs");
+  // don't forget json-server db.json
 
-  //! MODAL
-  const modal = require("./modules/modal");
-
-  //*TIMER
-  const timer = require("./modules/timer");
-
-  //* CLASSES
-  const cards = require("./modules/cards");
-
-  //*FORMS
-  const forms = require("./modules/forms");
-
-  //*SLIDER
-  const slider = require("./modules/slider");
-
-  //* CALCULATING
-  const calc = require("./modules/calc");
-
-  //* COOKIES
-  const cookieConsent = require("./modules/cookieConsent");
-
+  const modalTimerId = setTimeout(
+    () => openModal(".modal", modalTimerId),
+    300000
+  );
   // вызов функций
-
   tabs();
-  modal();
+  modal("[data-modal]", ".modal", modalTimerId);
   timer();
   cards();
   calc();
-  forms();
+  forms(modalTimerId);
   slider();
   cookieConsent();
 });

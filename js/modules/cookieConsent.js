@@ -47,4 +47,4 @@ function cookieConsent() {
   });
 }
 
-module.exports = cookieConsent;
+export default cookieConsent;
