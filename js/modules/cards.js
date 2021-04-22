@@ -1,3 +1,5 @@
+import { getResource } from "../services/services";
+
 function cards() {
   class MenuCard {
     constructor(src, alt, title, descr, price, parentSelector) {
@@ -32,18 +34,6 @@ function cards() {
       this.parent.append(element);
     }
   }
-
-  // GET запрос для получения данных из db.json
-  const getResource = async (url) => {
-    const res = await fetch(url);
-    // .ok - состояние запроса
-    if (!res.ok) {
-      // выбросить ошибку
-      throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-    }
-    // вернуть результат
-    return await res.json();
-  };
 
   // вызов для получения данных из бд используем класс
   getResource("http://localhost:3000/menu").then((data) => {

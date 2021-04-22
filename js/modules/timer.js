@@ -1,7 +1,6 @@
-function timer() {
+function timer(id, deadline) {
   //! TIMER
-
-  const deadline = "2021,04,01";
+  // const deadline = "2021,04,01";
 
   const promotionDescr = document.querySelector(".promotion__descr"),
     spanDate = promotionDescr.querySelector(".spanDate");
@@ -78,7 +77,7 @@ function timer() {
     }
   }
 
-  setClock(".timer", deadline);
+  setClock(id, deadline);
 }
 
 export default timer;

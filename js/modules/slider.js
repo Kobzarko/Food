@@ -1,12 +1,21 @@
-function slider() {
-  const prev = document.querySelector(".offer__slider-prev"),
-    slider = document.querySelector(".offer__slider"),
-    next = document.querySelector(".offer__slider-next"),
-    current = document.querySelector("#current"),
-    slides = document.querySelectorAll(".offer__slide"),
-    total = document.querySelector("#total"),
-    slidesWrapper = document.querySelector(".offer__slider-wrapper"),
-    slidesField = document.querySelector(".offer__slider-inner"),
+function slider({
+  container,
+  slide,
+  nextArrow,
+  prevArrow,
+  totalCounter,
+  currentCounter,
+  wrapper,
+  field,
+}) {
+  const prev = document.querySelector(prevArrow),
+    slider = document.querySelector(container),
+    next = document.querySelector(nextArrow),
+    current = document.querySelector(currentCounter),
+    slides = document.querySelectorAll(slide),
+    total = document.querySelector(totalCounter),
+    slidesWrapper = document.querySelector(wrapper),
+    slidesField = document.querySelector(field),
     width = window.getComputedStyle(slidesWrapper).width;
 
   //Window.getComputedStyle()  возвращает объект, содержащий значения всех CSS-свойств элемента,
