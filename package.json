@@ -8,10 +8,22 @@
   },
   "author": "Yevhen Pyshiev",
   "license": "ISC",
+  "browserslist": [
+    "> 1%"
+  ],
   "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15",
+    "babel-loader": "^8.2.2",
+    "core-js": "^3.11.0",
     "json-server": "^0.16.3"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "es6-promise": "^4.2.8",
+    "nodelist-foreach-polyfill": "^1.2.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Kobzarko/Food.git"

@@ -1,7 +1,9 @@
-//! Tabs
-import tabs from "./modules/tabs";
+require("es6-promise").polyfill();
+import "nodelist-foreach-polyfill";
 
-//! MODAL
+//* Tabs
+import tabs from "./modules/tabs";
+//* MODAL
 import modal from "./modules/modal";
 //*TIMER
 import timer from "./modules/timer";

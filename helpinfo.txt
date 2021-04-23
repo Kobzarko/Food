@@ -1,0 +1,26 @@
+launch Babel cmd
+https://babeljs.io/docs/en/usage
+npm install --save-dev @babel/core @babel/cli @babel/preset-env
+npm install --save @babel/polyfill
+npm i --save-dev babel-loader
+
+https://github.com/zloirock/core-js
+npm i --save-dev core-js
+
+if you need set up a polyfill mainly search in google
+https://www.npmjs.com/package/es6-promise
+npm i es6-promise
+
+Provides a polyfill nodelist-foreach-polyfill to all Browsers supporting ES5
+https://www.npmjs.com/package/nodelist-foreach-polyfill
+npm i nodelist-foreach-polyfill
+
+launch webpack cmd 
+https://webpack.js.org/guides/getting-started/
+npx webpack
+
+stop server 
+ctrl + c
+
+launch json-server 
+json-server db.json
